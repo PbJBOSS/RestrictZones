@@ -2,14 +2,12 @@ package com.pbjboss.restrictzones;
 
 import cpw.mods.fml.common.FMLLog;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.Level;
 
 import java.io.*;
 import java.util.ArrayList;
 
-/**
- * Created by Nico on 2/11/2015.
- */
 public
 class ZoneHandler
 {
@@ -17,14 +15,9 @@ class ZoneHandler
     ArrayList<Zone> zones;
     static File file;
 
-    public static void loadZones(File location)
+    public static void loadZones()
     {
-        File configLocation = new File(location.getPath() + "/restrictzones");
-        file = new File(configLocation.getPath() + "/restrictzones.zones");
-        if (!configLocation.exists())
-        {
-            configLocation.mkdirs();
-        }
+        file = new File(RestrictZones.configDirectory.getPath() + String.format("/%s.zones", MinecraftServer.getServer().getFolderName()));
 
         if (!file.exists())
         {
@@ -42,22 +35,22 @@ class ZoneHandler
         {
             FileInputStream fileInputStream = new FileInputStream(file);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            zones = (ArrayList<Zone>) objectInputStream.readObject();
-
+            if (objectInputStream.available() > 0)
+            {
+                zones = (ArrayList<Zone>) objectInputStream.readObject();
+            }
             objectInputStream.close();
             fileInputStream.close();
 
-            FMLLog.log(Level.INFO, String.format("%s zones loaded", zones.size()));
+            //FMLLog.log(Level.INFO, String.format("%s zones loaded", zones.size()));
         } catch (FileNotFoundException e)
         {
-            e.printStackTrace();
         } catch (IOException e)
         {
-            e.printStackTrace();
         } catch (ClassNotFoundException e)
         {
-            e.printStackTrace();
         }
+
         if (zones == null)
         {
             zones = new ArrayList<Zone>();
@@ -86,12 +79,8 @@ class ZoneHandler
 
     public static boolean doesZoneContainBlock(int x, int y, int z, Zone zone)
     {
-        if (x >= zone.minX && y >= zone.minY && z >= zone.minZ && x <= zone.maxX && y <= zone.maxY && z <= zone.maxZ)
-        {
-            return true;
-        }
+        return x >= zone.minX && y >= zone.minY && z >= zone.minZ && x <= zone.maxX && y <= zone.maxY && z <= zone.maxZ;
 
-        return false;
     }
 
     public static boolean isPlayerInZone(EntityPlayer player, Zone zone)
@@ -99,17 +88,20 @@ class ZoneHandler
         double x = player.posX;
         double y = player.posY;
         double z = player.posZ;
-        if (x >= zone.minX && y >= zone.minY && z >= zone.minZ && x <= zone.maxX && y <= zone.maxY && z <= zone.maxZ)
-        {
-            return true;
-        }
+        return x >= zone.minX && y >= zone.minY && z >= zone.minZ && x <= zone.maxX && y <= zone.maxY && z <= zone.maxZ;
 
-        return false;
     }
 
     public static void addZone(int worldId, int minX, int minY, int minZ, int maxX, int maxY, int maxZ)
     {
         Zone zone = new Zone(worldId, minX, minY, minZ, maxX, maxY, maxZ);
+        ZoneHandler.zones.add(zone);
+        ZoneHandler.saveZones();
+    }
+
+    public static void addZone(int worldId, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, String tag)
+    {
+        Zone zone = new Zone(worldId, minX, minY, minZ, maxX, maxY, maxZ, tag);
         ZoneHandler.zones.add(zone);
         ZoneHandler.saveZones();
     }

@@ -1,8 +1,5 @@
 package com.pbjboss.restrictzones;
 
-/**
- * Created by Nico on 2/11/2015.
- */
 public
 class Util
 {

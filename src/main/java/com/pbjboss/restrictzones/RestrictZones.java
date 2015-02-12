@@ -7,14 +7,13 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.Level;
 
-/**
- * Created by Nico on 2/11/2015.
- */
+import java.io.File;
 
 @Mod(modid = RestrictZones.modid, name = RestrictZones.name, version = RestrictZones.version, acceptableRemoteVersions = "*")
 public
 class RestrictZones
 {
+    public static File configDirectory;
     public static final String modid = "restrictzones";
     public static final String name = "RestrictZones";
     public static final String version = "1.7.10-1.0";
@@ -28,9 +27,15 @@ class RestrictZones
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        configDirectory = new File(event.getModConfigurationDirectory()+"/restrictzones");
+
+        if (!configDirectory.exists())
+        {
+            configDirectory.mkdirs();
+        }
+
         MinecraftForge.EVENT_BUS.register(new EventHandler());
-        ConfigurationHandler.load(event.getSuggestedConfigurationFile());
-        ZoneHandler.loadZones(event.getModConfigurationDirectory());
+        ConfigurationHandler.load();
         FMLLog.log(Level.INFO, "RestrictZones loaded!");
     }
 }

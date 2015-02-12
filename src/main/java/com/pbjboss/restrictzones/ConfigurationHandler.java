@@ -6,9 +6,6 @@ import org.apache.logging.log4j.Level;
 
 import java.io.File;
 
-/**
- * Created by Nico on 2/11/2015.
- */
 public
 class ConfigurationHandler
 {
@@ -18,22 +15,24 @@ class ConfigurationHandler
     //public static boolean zonesUseMaxHeight;
     public static int zoneDefaultRadius;
     public static boolean sendPlayerMessage;
+    public static boolean generateZoneAroundSpawn;
+    public static int spawnZoneXRadius;
+    public static int spawnZoneZRadius;
 
-    public static void load(File file)
+    public static void load()
     {
-        if (config == null)
-        {
-            config = new Configuration(file);
-        }
-        
-        FMLLog.log(Level.INFO, "Loading RestrictZones config");
+        File file = new File(RestrictZones.configDirectory.getPath() + "/restrictzones.cfg");
+        config = new Configuration(file);
         try
         {
             config.load();
             opOverridesZones = config.getBoolean("opOverridesZones",Configuration.CATEGORY_GENERAL,true,"Does having op override zones");
             //zonesUseMaxHeight = config.getBoolean("zonesUseMaxHeight", Configuration.CATEGORY_GENERAL, true, "Is the default height of a zone the max world height");
-            zoneDefaultRadius = config.getInt("zoneDefaultRadius", Configuration.CATEGORY_GENERAL, 20, 0, 500, "Default radius for a zone if the command is run without arguments");
+            zoneDefaultRadius = config.getInt("zoneDefaultRadius", Configuration.CATEGORY_GENERAL, 20, 0, 1000, "Default radius for a zone if the command is run without arguments");
             sendPlayerMessage = config.getBoolean("sendPlayerMessage", Configuration.CATEGORY_GENERAL, false, "Sends the player a message if they can't break a block");
+            generateZoneAroundSpawn = config.getBoolean("generateSpawnZone", Configuration.CATEGORY_GENERAL, false, "Generate a zone around any newly created worlds");
+            spawnZoneXRadius = config.getInt("spawnZoneDefaultXRadius", Configuration.CATEGORY_GENERAL, 20, 0 , 1000, "Default x radius for a spawn zone");
+            spawnZoneZRadius = config.getInt("spawnZoneDefaultZRadius", Configuration.CATEGORY_GENERAL, 20, 0 , 1000, "Default z radius for a spawn zone");
         }
         catch (Exception e)
         {

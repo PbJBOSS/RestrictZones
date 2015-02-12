@@ -3,14 +3,12 @@ package com.pbjboss.restrictzones;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.util.List;
 
-/**
- * Created by Nico on 2/11/2015.
- */
 public
 class CommandZone implements ICommand
 {
@@ -118,14 +116,13 @@ class CommandZone implements ICommand
                 for (int  i = 0; i < ZoneHandler.zones.size(); i++)
                 {
                     Zone zone = ZoneHandler.zones.get(i);
-                    if (player.worldObj.provider.dimensionId != zone.worldId || ZoneHandler.zones.isEmpty())
+                    if (ZoneHandler.zones.isEmpty())
                     {
                         player.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.GREEN + "No zones exist in this world"));
                     }
                     else
                     {
-                        player.addChatComponentMessage(new ChatComponentText(String.format("%sDimensionId: %s, minX: %s, minY: %s, minZ: %s, maxX: %s, maxY: %s, maxZ: %s",EnumChatFormatting.GOLD, zone.worldId, zone.minX, zone.minY, zone.minZ, zone.maxX, zone.maxY, zone.maxZ)));
-
+                        player.addChatComponentMessage(new ChatComponentText(String.format("%sDimensionId: %s, minX: %s, minY: %s, minZ: %s, maxX: %s, maxY: %s%s, maxZ: %s",EnumChatFormatting.GOLD, zone.worldId, zone.minX, zone.minY, zone.minZ, zone.maxX, zone.maxY,EnumChatFormatting.GOLD, zone.maxZ)));
                     }
                 }
             }
@@ -140,7 +137,7 @@ class CommandZone implements ICommand
     public
     boolean canCommandSenderUseCommand(ICommandSender p_71519_1_)
     {
-        return true;
+        return MinecraftServer.getServer().canCommandSenderUseCommand(3, "");
     }
 
     @Override
