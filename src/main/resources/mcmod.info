@@ -1,0 +1,16 @@
+[
+{
+  "modid": "restrictzones",
+  "name": "Restrict Zones",
+  "description": "Restriction of breaking blocks in certain areas.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["PbJBOSS"],
+  "credits": "mine_my_own_bizz",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
