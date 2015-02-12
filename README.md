@@ -8,6 +8,8 @@ Only one command needed to use this mod: /zone.
 
 Configuration options are available. 
 
+*This mod is only required on the server, although it will not hurt your client in any way.*
+
 #--------------------
 #Command use
 #--------------------
