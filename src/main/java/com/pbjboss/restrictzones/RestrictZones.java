@@ -16,7 +16,7 @@ class RestrictZones
     public static File configDirectory;
     public static final String modid = "restrictzones";
     public static final String name = "RestrictZones";
-    public static final String version = "1.7.10-1.1";
+    public static final String version = "1.7.10-1.2";
 
     @Mod.EventHandler
     public void serverStartingEvent(FMLServerStartingEvent event)

@@ -12,6 +12,7 @@ class ConfigurationHandler
 
     public static Configuration config;
     public static boolean opOverridesZones;
+    public static boolean creativeOverridesZones;
     //public static boolean zonesUseMaxHeight;
     public static int zoneDefaultRadius;
     public static boolean sendPlayerMessage;
@@ -33,6 +34,7 @@ class ConfigurationHandler
             generateZoneAroundSpawn = config.getBoolean("generateSpawnZone", Configuration.CATEGORY_GENERAL, false, "Generate a zone around any newly created worlds");
             spawnZoneXRadius = config.getInt("spawnZoneDefaultXRadius", Configuration.CATEGORY_GENERAL, 20, 0 , 1000, "Default x radius for a spawn zone");
             spawnZoneZRadius = config.getInt("spawnZoneDefaultZRadius", Configuration.CATEGORY_GENERAL, 20, 0 , 1000, "Default z radius for a spawn zone");
+            creativeOverridesZones = config.getBoolean("creativeOverridesZones", Configuration.CATEGORY_GENERAL, false, "Does having creative override zones");
         }
         catch (Exception e)
         {

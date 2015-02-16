@@ -13,12 +13,29 @@ public
 class EventHandler
 {
     @SubscribeEvent
+    public void blockPlaceEvent(BlockEvent.PlaceEvent event)
+    {
+        if ((ConfigurationHandler.opOverridesZones && event.player.canCommandSenderUseCommand(3, "")) || (ConfigurationHandler.creativeOverridesZones && event.player.capabilities.isCreativeMode))
+            return;
+
+        for (int i = 0; i < ZoneHandler.zones.size(); i++)
+        {
+            if (ZoneHandler.zones.get(i).worldId == event.player.worldObj.provider.dimensionId && ZoneHandler.doesZoneContainBlock(event.x,event.y,event.z, ZoneHandler.zones.get(i)))
+            {
+                if (ConfigurationHandler.sendPlayerMessage)
+                {
+                    event.player.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.RED + "You cannot place blocks here!"));
+                }
+                event.setCanceled(true);
+                return;
+            }
+        }
+    }
+
+    @SubscribeEvent
     public void blockBreakEvent(BlockEvent.BreakEvent event)
     {
-        //ZoneHandler.loadZones();
-
-
-        if (ConfigurationHandler.opOverridesZones && event.getPlayer().canCommandSenderUseCommand(2,""))
+        if ((ConfigurationHandler.opOverridesZones && event.getPlayer().canCommandSenderUseCommand(3, "")) || (ConfigurationHandler.creativeOverridesZones && event.getPlayer().capabilities.isCreativeMode))
             return;
 
         for (int i = 0; i < ZoneHandler.zones.size(); i++)
